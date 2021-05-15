@@ -1,0 +1,19 @@
+version: '3'
+
+services: 
+  server1:
+    build:
+      dockerfile: docker/Dockerfile-ubuntu
+      context: .
+    container_name: server-ubuntu-1
+    ports:
+      - "221:22"
+
+  server2:
+    build:
+      dockerfile: docker/Dockerfile-ubuntu
+      context: .
+    container_name: server-ubuntu-2
+    ports:
+      - "222:22"
+
