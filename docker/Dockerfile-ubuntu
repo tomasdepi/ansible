@@ -4,6 +4,11 @@ RUN apt-get update && \
     apt-get install -y openssh-server sudo python3 && \
     rm -rf /var/lib/apt/lists/* /tmp/*
 
+RUN useradd -ms /bin/bash ubuntu && \
+    usermod -aG sudo ubuntu && \
+    echo 'ubuntu:depi' | chpasswd && \
+    echo 'ubuntu     ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+
 RUN mkdir /var/run/sshd
 RUN echo 'root:screencast' | chpasswd
 
