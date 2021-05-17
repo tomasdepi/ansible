@@ -47,6 +47,6 @@ server2 ansible_port=222
 
 [local:vars]
 ansible_connection=ssh
-ansible_user=root
-ansible_ssh_pass=screencast
+ansible_user=ubuntu
+ansible_ssh_pass=depi
 ansible_host=127.0.0.1
