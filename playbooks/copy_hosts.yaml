@@ -4,5 +4,5 @@
   tasks:
     - name: Copy
       copy: 
-        src=/etc/hosts
-        dest=/tmp/hosts
+        src: /etc/hosts
+        dest: /tmp/hosts
