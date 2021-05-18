@@ -1,0 +1,9 @@
+Hello {{ ansible_fqdn }}
+
+{% if ansible_distribution == "Ubuntu" %}
+This is a Ubuntu
+{% endif %}
+
+{% for user in user_list%}
+{{ user }}
+{% endfor %}
