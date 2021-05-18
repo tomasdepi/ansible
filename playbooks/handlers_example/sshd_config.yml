@@ -1,0 +1,14 @@
+---
+- name: Configure sshd
+  hosts: all
+  tasks:
+    - name: Copy sshd config
+      copy:
+        src: sshd_config
+        dest: /etc/ssh/sshd_config
+      notify: Restart sshd service
+  handlers:
+    - name: Restart sshd service
+      service:
+        name: ssh
+        state: reloaded
