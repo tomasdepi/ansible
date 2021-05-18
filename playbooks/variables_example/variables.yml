@@ -1,0 +1,9 @@
+---
+- name: Create File Using Variables
+  hosts: localhost
+  connection: local
+  vars:
+    - mi_ip: "1.2.3.4"
+  tasks:
+    - name: Create hosts File
+      template: src=hosts.j2 dest=/tmp/hosts
