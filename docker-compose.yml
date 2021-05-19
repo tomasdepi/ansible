@@ -17,3 +17,10 @@ services:
     ports:
       - "222:22"
 
+  server3:
+    build:
+      dockerfile: docker/Dockerfile-centos
+      context: .
+    container_name: server-centos-1
+    ports:
+     - "223:22"
