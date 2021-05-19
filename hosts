@@ -41,12 +41,25 @@
 # leading 0s:
 
 #db-[99:101]-node.example.com
-[local]
+[local:children]
+ubuntu
+centos
+
+[ubuntu]
 server1 ansible_port=221
 server2 ansible_port=222
+
+[centos]
+server3 ansible_port=223
 
 [local:vars]
 ansible_connection=ssh
 ansible_user=ubuntu
 ansible_ssh_pass=depi
 ansible_host=127.0.0.1
+
+[ubuntu:vars]
+ansible_user=ubuntu
+
+[centos:vars]
+ansible_user=centos
