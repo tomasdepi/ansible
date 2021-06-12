@@ -32,6 +32,10 @@ Invoke module:
 ```
 ansible localhost -m ping
 ```
+Invoke module with params:
+```
+ansible -i hosts server1 -m stat -a "path=/etc/services get_attributes=true"
+```
 Invoke command:
 ```
 ansible localhost -a "hostname"
