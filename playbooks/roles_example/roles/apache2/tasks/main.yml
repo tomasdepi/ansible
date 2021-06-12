@@ -1,17 +1,10 @@
-- name: Install Apache2
-  apt:
-    name: apache2
-    state: present
-- name: Start Apache2
-  service:
-    name: apache2
-    state: started
-    enabled: true
-- name: Copy Configuration
-  copy:
-    src: apache2.conf
-    dest: /etc/apache2/apache2.conf
-  notify: restart_httpd
+- name: Install Apache2 in Ubuntu
+  include: install-apache2.yml
+  when: ansible_distribution == "Ubuntu"
+
+- name: Install Apache2 in CentOS
+  include: install-httpd.yml
+  when: ansible_distribution == "CentOS"
 
 - name: Copy index
   template:
