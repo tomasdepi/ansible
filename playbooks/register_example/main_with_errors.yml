@@ -1,0 +1,18 @@
+---
+- name: Register Example With Errors
+  hosts: all
+  tasks:
+
+    - name: Cat some File
+      command: cat /tmp/some-file.txt
+      register: output_cat_file
+      ignore_errors: True
+
+    - name: Print Standard Output
+      debug: var=output_cat_file.stdout
+      when: not output_cat_file.failed
+    
+    - name: Print Standard Error
+      debug: var=output_cat_file.stderr
+      when: output_cat_file.failed
+    

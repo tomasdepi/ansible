@@ -1,0 +1,24 @@
+---
+- name: Register Example
+  hosts: all
+  tasks:
+    - name: Uptime
+      command: uptime
+      register: output_uptime
+
+    - name: Print Output Uptime
+      debug: var=output_uptime.stdout
+
+    - name: Copy File
+      copy: src=hello.txt dest=/tmp/hello.txt
+      register: output_copy_file
+
+    - name: Show File
+      command: cat /tmp/hello.txt
+      register: output_cat_file
+      when: output_copy_file.changed
+
+    - name: Print Output Show File
+      debug: var=output_cat_file.stdout
+      when: output_copy_file.changed
+    
