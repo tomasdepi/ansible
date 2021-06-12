@@ -1,0 +1,8 @@
+---
+- name: playing with stat
+  hosts: localhost
+  tasks:
+    - stat: path=/etc/services
+      register: output_stats
+    
+    - debug: var=output_stats

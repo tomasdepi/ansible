@@ -1,0 +1,13 @@
+---
+- name: install packages
+  hosts: localhost
+  tasks:
+    - name: install Pandas
+      pip: name=pandas state=latest
+
+    - name: update cache list
+      apt: update_cache=yes upgrade=dist
+
+    - name: install nmap
+      apt: name=nmap state=latest
+  
