@@ -1,0 +1,17 @@
+- name: Provision Ubuntu Servers
+  hosts: ubuntu
+  become: true
+  tasks:
+    # apt within a loop is deprecrated but for learning purposes I kept this version of the code.
+    # the correct way in this case would be: apt: name=['python3', 'php7.2', 'nmap']
+    - name: Install Required Dependencies
+      apt: name={{ item }} state=latest
+      with_items:
+        - php7.2
+        - nmap
+        - apache2
+    - name: Create users
+      user: name={{ item.name }} group={{ item.group }}
+      with_items:
+       - { name: depi, group: www-data }
+       - { name: tomas, group: www-data }
