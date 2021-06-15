@@ -1,0 +1,4 @@
+- src: bennojoy.nginx
+
+- src: tomasdepi.ansible_galaxy_example
+  name: docker-install

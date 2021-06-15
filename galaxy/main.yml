@@ -1,0 +1,5 @@
+- name: Install Docker dependencies
+  hosts: ubuntu
+  become: true
+  roles:
+    - docker-install
