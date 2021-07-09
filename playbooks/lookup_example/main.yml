@@ -1,0 +1,21 @@
+---
+- name: Lookup Example
+  hosts: ubuntu
+  tasks:
+
+   - name: Gather Information
+     set_fact: hosts="{{lookup('file', '/etc/hosts')}}"
+
+   - name: Copy
+     copy:
+      dest: /tmp/hosts
+      content: "{{ hosts }}"
+
+   - name: Generate Random Password
+     set_fact: password="{{lookup('password', '/tmp/my_password')}}"
+
+   #- name: Gather Information from config file
+   #  debug: msg="{{lookup('ini', 'ansible_user section=ubuntu\:vars file=../../hosts')}}"
+
+   - name: Dig DNS
+     debug: msg="{{lookup('dig', 'google.com/MX', wantlist=True)}}"
