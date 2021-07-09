@@ -1,0 +1,17 @@
+---
+- name: Async Example
+  hosts: localhost
+  tasks:
+
+    - command: sleep 15
+      async: 20 # timeout
+      poll: 0 # interval to reopen the connection and ask for the job's status
+      register: sleep_status
+
+    - debug: msg="another tasks..."
+
+    - async_status:
+        jid: "{{ sleep_status.ansible_job_id }}"
+      register: state
+      until: state.finished
+      retries: 30
