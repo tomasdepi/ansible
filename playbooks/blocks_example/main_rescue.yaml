@@ -1,0 +1,18 @@
+---
+- name: Install and configure httpd web server
+  hosts: all
+  tasks:
+    - name: Install and configure httpd web server
+      when: ansible_distribution == "CentOS"
+      block:
+        - name: install httpd
+          package:
+            name: httpd
+            state: present
+        - name: enable httpd
+          service:
+            name: httpd
+            state: started
+      rescue:
+        - debug:
+            msg: 'Playbook has failed for {{ inventory_hostname}} node'
