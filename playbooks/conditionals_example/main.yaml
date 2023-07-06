@@ -28,3 +28,75 @@
 
     - shell: 'echo "nameserver 10.0.250.10" >> /etc/resolv.conf'
       when: 'command_output.stdout.find("10.0.250.10") == -1'
+
+---
+- name: Install apache
+  hosts: all
+  tasks:
+    - name: install apache2
+      apt:
+        name: apache2
+        state: present
+      when: ansible_distribution == "Ubuntu"
+    - name: install httpd
+      yum:
+        name: httpd
+        state: present
+      when: ansible_distribution == "CentOS"
+
+---
+- hosts: web2
+  gather_facts: false
+  tasks:
+    - shell: dpkg -l git
+      register: check_if_git_installed
+      ignore_errors: true
+
+    - debug: var=check_if_git_installed
+    - shell: echo 'Oops, git is missing' > /tmp/is_git_installed.txt
+      when: check_if_git_installed.rc != 0
+
+    - shell: git --version > /tmp/is_git_installed.txt
+      when: check_if_git_installed.rc == 0
+    
+---
+- hosts: web2
+  gather_facts: no
+  vars:
+    remote_dest: /usr/local/bin/report_status.sh
+  tasks:
+    - stat:
+        path: "{{remote_dest}}"
+      register: file_status
+    
+    - debug: var=file_status
+
+    - name: Make the script executable
+      file:
+        path: "{{remote_dest}}"
+        mode: '0755'
+      when: file_status.stat.executable == false
+
+    - name: print result
+      shell: echo 'File report_status.sh is not executable, making it executable...' > /tmp/change.log
+      when: file_status.stat.executable == false
+   
+    - name: make file executable
+      file:
+        path: "{{remote_dest}}"
+        mode: 0755
+      when: file_status.stat.executable == false
+
+---
+- hosts: web2
+  name: Check if vulnerable to Shellshock
+  tasks:
+    - shell: /usr/local/bin/report_status.sh
+      register: script_output
+  
+    - debug:
+        var: script_output
+  
+    - package:
+        name: bash
+      when: script_output.stdout_lines[0].find('not') == 1
