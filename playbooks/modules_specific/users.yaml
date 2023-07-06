@@ -1,0 +1,20 @@
+---
+- hosts: all
+  gather_facts: no
+  tasks:
+    - group:
+        name: 'admin'
+        state: present
+    - user:
+        name: 'admin'
+        uid: 2048
+        group: 'admin'
+
+---
+- hosts: all
+  gather_facts: no
+  name: Set a expiration on a user
+  tasks:
+    - user:
+        name: 'depi'
+        expires: 1704067199

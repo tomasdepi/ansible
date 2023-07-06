@@ -1,0 +1,55 @@
+---
+- name: Touch a file
+  hosts: web1
+  tasks:
+    - file:
+        path: /opt/data/perm.txt
+        mode: 0644
+        state: touch
+
+---
+- name: Create index.html on web1
+  hosts: web1
+  tasks:
+  - lineinfile:
+      path: /var/www/html/index.html
+      line: 'This line was added using Ansible lineinfile module!'
+      create: yes
+
+---
+- hosts: web1
+  tasks:
+    - name: Find files
+      find:
+        paths: /opt/data
+        age: 2m # older than 2 minutes
+        size: 1m # grater than 1 megabyte
+        recurse: yes
+      register: file
+
+    - name: Copy files
+      command: "cp {{ item.path }} /opt"
+      with_items: "{{ file.files }}"
+
+---
+- name: Add block to index.html
+  hosts: web1
+  tasks:
+   - blockinfile:
+      owner: apache
+      group: apache
+      insertbefore: BOF
+      path: /var/www/html/index.html
+      block: |
+       Welcome to KodeKloud!
+       This is Ansible Lab.
+
+---
+- name: replace port 80 to 8080
+  hosts: web1
+  tasks:
+  - replace:
+      path: /etc/httpd/conf/httpd.conf
+      regexp: 'Listen 80'
+      replace: 'Listen 8080'
+  - service: name=httpd state=restarted
